@@ -85,7 +85,7 @@ public class MainActivity extends Activity implements
 
     private void speakOut() {
 
-        String text = "Tap then take a picture of the grocery item.";
+        String text = "Tap once then take a picture of the grocery item by tapping the middle bottom once and then again to confirm.";
 
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -55,6 +56,8 @@ public class ResultActivity extends Activity implements
     String asd;
     String locationInfo;
     RelativeLayout rlayout;
+    Button button3;
+    Button button4;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +65,8 @@ public class ResultActivity extends Activity implements
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_result);
         asd = "Done! Please tap again.";
-        rlayout = (RelativeLayout) findViewById(R.id.RelativeActivityLayout);
+        button3 = (Button) findViewById(R.id.button3);
+        button4 = (Button) findViewById(R.id.button4);
         tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
@@ -130,7 +134,6 @@ public class ResultActivity extends Activity implements
             e.printStackTrace();
         }
         Gson gson = new Gson();
-
         String json = gson.toJson(respString);
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
         asd = jsonObject.get("response").toString();
@@ -142,17 +145,25 @@ public class ResultActivity extends Activity implements
         }
         finished.setText(asd);
         if (locationInfo.equals("")) {
-            asd = "You're holding a " + asd + "." + "Please tap again, take another picture, and wait 20 more seconds for more information.";
+            asd = "You're holding a " + asd + "." + "Please tap the top center to try another product or tap the bottom center to take another photo and wait 10 more seconds for expiry information.";
         } else {
-            asd = "You're holding a " + asd + "." + locationInfo + " and wait 20 more seconds for more information.";
+            asd = "You're holding a " + asd + "." + locationInfo + " and wait 10 more seconds for more information.";
         }
 
         speakOut(asd);
-        rlayout.setOnClickListener(new OnClickListener() {
+        button4.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 // Start NewActivity.class
                 Intent myIntent = new Intent(ResultActivity.this,
                         Camera2Activity.class);
+                startActivity(myIntent);
+            }
+        });
+        button3.setOnClickListener(new OnClickListener() {
+            public void onClick(View arg0) {
+                // Start NewActivity.class
+                Intent myIntent = new Intent(ResultActivity.this,
+                        MainActivity.class);
                 startActivity(myIntent);
             }
         });

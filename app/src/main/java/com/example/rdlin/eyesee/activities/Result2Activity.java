@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,6 +70,7 @@ public class Result2Activity extends Activity implements
         setContentView(R.layout.activity_result2);
         button1 = (Button) findViewById(R.id.button1);
         button2 = (Button) findViewById(R.id.button2);
+
         asd = "Done! Please tap again.";
         rlayout = (RelativeLayout) findViewById(R.id.RelativeActivityLayout);
         tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -114,7 +116,7 @@ public class Result2Activity extends Activity implements
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url2?imgur=" + cutLink));
+            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url?imgur=" + cutLink));
             resp = client.execute(request);
             try {
                 Thread.sleep(5000);

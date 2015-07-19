@@ -99,7 +99,7 @@ public class CameraActivity extends Activity implements
 
     private void speakOut() {
 
-        String text = "Please take a picture by tapping the bottom middle button once to take the picture, wait 2 seconds, and another time to confirm. Then please wait 20 seconds.";
+        String text = "Please wait 20 seconds after you finish taking the picture for us to process.";
 
         tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }

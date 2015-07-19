@@ -18,24 +18,44 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:textSize="30dp"
+        android:gravity="center"
         android:text="Continue"
         android:id="@+id/button1"
         android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:gravity="center"
         android:text="Tip with Venmo"
+        android:textSize="30dp"
         android:id="@+id/button2"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/button1"
         android:layout_alignEnd="@+id/button1" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView5"
+        android:layout_above="@+id/upload_finish"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/arrowup" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView6"
+        android:layout_below="@+id/upload_finish"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/arrowdown" />
 
 </RelativeLayout>
