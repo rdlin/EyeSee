@@ -138,7 +138,7 @@ public class Result2Activity extends Activity implements
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
 
         if (jsonObject.has("expiry") && jsonObject.get("expiry").toString().equals("")) {
-            asd = "The expiry date is " + jsonObject.get("expiry").toString() + "";
+            asd = "The expiry date is " + jsonObject.get("expiry").toString() + " ";
             finished.setText(asd);
         }
         else {
