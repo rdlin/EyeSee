@@ -113,7 +113,7 @@ public class ResultActivity extends Activity implements
             request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url?imgur=" + cutLink));
             resp = client.execute(request);
             try {
-                Thread.sleep(5000);
+                Thread.sleep(7000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -147,7 +147,7 @@ public class ResultActivity extends Activity implements
         if (locationInfo.equals("")) {
             asd = "You're holding a " + asd + "." + "Please tap the top center to try another product or tap the bottom center to take another photo and wait 10 more seconds for expiry information.";
         } else {
-            asd = "You're holding a " + asd + "." + locationInfo + " and wait 10 more seconds for more information.";
+            asd = "You're holding a " + asd + "." + locationInfo + " and wait 5 more seconds for more information.";
         }
 
         speakOut(asd);

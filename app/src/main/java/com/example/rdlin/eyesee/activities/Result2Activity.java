@@ -111,7 +111,12 @@ public class Result2Activity extends Activity implements
      */
         aLog.w("LOGGING", response.toString());
         finished.setText("Upload finished: " + response.data.link);
-        String cutLink = response.data.link.substring(Math.max(0, response.data.link.length() - 11));
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        /*String cutLink = response.data.link.substring(Math.max(0, response.data.link.length() - 11));
         HttpResponse resp = null;
         try {
             HttpClient client = new DefaultHttpClient();
@@ -132,14 +137,14 @@ public class Result2Activity extends Activity implements
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
-        String respString = "";
+        }*/
+        /*String respString = "";
         try {
             respString = convertStreamToString(resp.getEntity().getContent());
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        Gson gson = new Gson();
+        }*/
+        /*Gson gson = new Gson();
 
         String json = gson.toJson(respString);
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
@@ -148,10 +153,10 @@ public class Result2Activity extends Activity implements
             asd = "The expiry date is " + jsonObject.get("expiry").toString() + " . Tap the bottom button to tip with Venmo. ";
             finished.setText(asd);
         }
-        else {
+        else {*/
             asd = "We were not able to find the expiry date. Sorry";
             finished.setText(asd);
-        }
+        //}
         asd = asd + "." + " Thank you for using eyesee. Tap the top to try for another product.";
         speakOut(asd);
         button1.setOnClickListener(new OnClickListener() {
@@ -165,7 +170,7 @@ public class Result2Activity extends Activity implements
         button2.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 // Start NewActivity.class
-                Intent venmoIntent = VenmoLibrary.openVenmoPayment("2782", "EyeSee", "rdlin259@gmail.com", "1", "EyeSee donation", "pay");
+                Intent venmoIntent = VenmoLibrary.openVenmoPayment("2782", "EyeSee", "eyesee.venmo@gmail.com", "1", "EyeSee donation", "pay");
                 startActivityForResult(venmoIntent, REQUEST_CODE_VENMO_APP_SWITCH);
             }
         });
