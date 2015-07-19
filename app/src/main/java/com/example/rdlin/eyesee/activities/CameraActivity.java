@@ -20,6 +20,7 @@ public class CameraActivity extends Activity {
     int TAKE_PHOTO_CODE = 0;
     public static int count=0;
     String file;
+    Uri outputFileUri;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -44,11 +45,11 @@ public class CameraActivity extends Activity {
                 } catch (IOException e) {
                 }
 
-                Uri outputFileUri = Uri.fromFile(newfile);
+                outputFileUri = Uri.fromFile(newfile);
 
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-                cameraIntent.putExtra("PicName", file);
+                cameraIntent.putExtra("PicName", outputFileUri);
                 startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
             }
         });
@@ -63,7 +64,7 @@ public class CameraActivity extends Activity {
             Log.d("CameraDemo", file);
             Intent myIntent = new Intent(CameraActivity.this,
                    ResultActivity.class);
-            myIntent.putExtra("picName", file);
+            myIntent.setData(outputFileUri);
             startActivity(myIntent);
         }
     }

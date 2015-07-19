@@ -33,7 +33,8 @@ public class NotificationHelper {
     mBuilder.setContentTitle("Uploading image...");
 
 
-    mBuilder.setColor(mContext.getResources().getColor(R.color.primary));
+
+    //mBuilder.setColor(mContext.getResources().getColor(R.color.primary));
 
     mBuilder.setAutoCancel(true);
 
@@ -50,7 +51,7 @@ public class NotificationHelper {
 
     mBuilder.setContentText(response.data.link);
 
-    mBuilder.setColor(mContext.getResources().getColor(R.color.primary));
+    //mBuilder.setColor(mContext.getResources().getColor(R.color.primary));
 
 
     Intent resultIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(response.data.link));
