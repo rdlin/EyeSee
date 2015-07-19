@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.rdlin.eyesee.R;
+import com.example.rdlin.eyesee.utils.VenmoLibrary;
 
 import java.util.HashMap;
 import java.util.Locale;
@@ -24,6 +25,7 @@ public class MainActivity extends Activity implements
     TextToSpeech t1;
     private TextToSpeech tts;
     private boolean instructions;
+    private static int REQUEST_CODE_VENMO_APP_SWITCH = 2782;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +46,9 @@ public class MainActivity extends Activity implements
                     Intent myIntent = new Intent(MainActivity.this,
                             CameraActivity.class);
                     startActivity(myIntent);
+                    // Start NewActivity.class
+                    /*Intent venmoIntent = VenmoLibrary.openVenmoPayment("2782", "EyeSee", "rdlin259@gmail.com", "1", "EyeSee donation", "pay");
+                    startActivityForResult(venmoIntent, REQUEST_CODE_VENMO_APP_SWITCH);*/
             }
         });
     }

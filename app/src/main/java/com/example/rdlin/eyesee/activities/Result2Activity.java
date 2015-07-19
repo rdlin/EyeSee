@@ -21,6 +21,7 @@ import com.example.rdlin.eyesee.imgurmodel.ImageResponse;
 import com.example.rdlin.eyesee.imgurmodel.Upload;
 import com.example.rdlin.eyesee.services.OnImageUploadedListener;
 import com.example.rdlin.eyesee.services.UploadService;
+import com.example.rdlin.eyesee.utils.VenmoLibrary;
 import com.example.rdlin.eyesee.utils.aLog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -49,7 +50,8 @@ import java.util.Locale;
 
 public class Result2Activity extends Activity implements
         OnImageUploadedListener{
-    Button button;
+    Button button1;
+    Button button2;
     TextView text;
     TextView finished;
     ImageView uploadImage;
@@ -58,12 +60,15 @@ public class Result2Activity extends Activity implements
     TextToSpeech tts;
     String asd;
     RelativeLayout rlayout;
+    private static final int REQUEST_CODE_VENMO_APP_SWITCH = 2782;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        setContentView(R.layout.activity_result);
+        setContentView(R.layout.activity_result2);
+        button1 = (Button) findViewById(R.id.button1);
+        button2 = (Button) findViewById(R.id.button2);
         asd = "Done! Please tap again.";
         rlayout = (RelativeLayout) findViewById(R.id.RelativeActivityLayout);
         tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -109,7 +114,7 @@ public class Result2Activity extends Activity implements
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url2?imgur=" + cutLink));
+            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url?imgur=" + cutLink));
             resp = client.execute(request);
             try {
                 Thread.sleep(5000);
@@ -138,16 +143,16 @@ public class Result2Activity extends Activity implements
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
 
         if (jsonObject.has("expiry") && jsonObject.get("expiry").toString().equals("")) {
-            asd = "The expiry date is " + jsonObject.get("expiry").toString() + " ";
+            asd = "The expiry date is " + jsonObject.get("expiry").toString() + " . Tap the bottom button to tip with Venmo. ";
             finished.setText(asd);
         }
         else {
             asd = "We were not able to find the expiry date. Sorry";
             finished.setText(asd);
         }
-        asd = asd + "." + " Thank you for using eyesee. Tap again to try for another product.";
+        asd = asd + "." + " Thank you for using eyesee. Tap the top to try for another product.";
         speakOut(asd);
-        rlayout.setOnClickListener(new OnClickListener() {
+        button1.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 // Start NewActivity.class
                 Intent myIntent = new Intent(Result2Activity.this,
@@ -155,7 +160,53 @@ public class Result2Activity extends Activity implements
                 startActivity(myIntent);
             }
         });
+        button2.setOnClickListener(new OnClickListener() {
+            public void onClick(View arg0) {
+                // Start NewActivity.class
+                Intent venmoIntent = VenmoLibrary.openVenmoPayment("2782", "EyeSee", "rdlin259@gmail.com", "1", "EyeSee donation", "pay");
+                startActivityForResult(venmoIntent, REQUEST_CODE_VENMO_APP_SWITCH);
+            }
+        });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        /*switch(requestCode) {
+            case REQUEST_CODE_VENMO_APP_SWITCH: {
+                if(resultCode == RESULT_OK) {
+                    String signedrequest = data.getStringExtra("signedrequest");
+                    if(signedrequest != null) {
+                        VenmoLibrary.VenmoResponse response = (new VenmoLibrary()).validateVenmoPaymentResponse(signedrequest, "AKKmruwRq4bHYRNxqs6LcUA879PbEzja");
+                        if(response.getSuccess().equals("1")) {
+                            //Payment successful.  Use data from response object to display a success message
+                            String note = response.getNote();
+                            String amount = response.getAmount();
+                        }
+                    }
+                    else {
+                        String error_message = data.getStringExtra("error_message");
+                        //An error ocurred.  Make sure to display the error_message to the user
+                    }
+                }
+                else if(resultCode == RESULT_CANCELED) {
+                    //The user cancelled the payment
+                }
+
+                break;
+            }
+
+        }*/
+        speakOut("Thank you. Redirecting to the start page.");
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Intent myIntent = new Intent(Result2Activity.this,
+                MainActivity.class);
+        startActivity(myIntent);
     }
 
     public static String convertStreamToString(InputStream inputStream) throws IOException {
