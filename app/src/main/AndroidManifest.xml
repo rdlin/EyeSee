@@ -32,6 +32,16 @@
         </activity>
         <activity
             android:name=".activities.ResultActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_result" >
+        </activity>
+        <activity
+            android:name=".activities.Camera2Activity"
+            android:label="@string/title_activity_camera" >
+        </activity>
+        <activity
+            android:name=".activities.Result2Activity"
+            android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_result" >
         </activity>
     </application>

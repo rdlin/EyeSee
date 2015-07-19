@@ -5,14 +5,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-
-    <Button
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="START"
-        android:id="@+id/restart_button"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:minHeight="200dp"
+        android:id="@+id/upload_image"
+        android:layout_alignParentTop="true"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,6 +19,24 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="No Photo"
         android:id="@+id/textViewResult"
-        android:layout_above="@+id/start_button"
+        android:layout_below="@+id/upload_image"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="START"
+        android:id="@+id/restart_button"
+        android:layout_below="@+id/textViewResult"
+        android:layout_alignRight="@+id/textViewResult"
+        android:layout_alignEnd="@+id/textViewResult" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/upload_finish"
+        android:layout_below="@+id/restart_button"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

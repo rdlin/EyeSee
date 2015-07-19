@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class CameraActivity extends Activity {
+public class Camera2Activity extends Activity {
     int TAKE_PHOTO_CODE = 0;
     public static int count=0;
     String file;
@@ -56,8 +56,8 @@ public class CameraActivity extends Activity {
         if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
             Log.d("CameraDemo", "Pic saved");
             Log.d("CameraDemo", file);
-            Intent myIntent = new Intent(CameraActivity.this,
-                   ResultActivity.class);
+            Intent myIntent = new Intent(Camera2Activity.this,
+                    Result2Activity.class);
             myIntent.setData(outputFileUri);
             startActivity(myIntent);
         }

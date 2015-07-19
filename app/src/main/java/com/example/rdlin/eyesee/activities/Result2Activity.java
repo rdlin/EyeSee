@@ -43,7 +43,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 
-public class ResultActivity extends Activity implements OnImageUploadedListener {
+public class Result2Activity extends Activity implements OnImageUploadedListener {
     Button button;
     TextView text;
     TextView finished;
@@ -73,6 +73,14 @@ public class ResultActivity extends Activity implements OnImageUploadedListener 
         Picasso.with(this).load(chosenFile).fit().into(uploadImage);
         createUpload(chosenFile);
         new UploadService(upload, this).execute();
+        button.setOnClickListener(new OnClickListener() {
+            public void onClick(View arg0) {
+                // Start NewActivity.class
+                Intent myIntent = new Intent(Result2Activity.this,
+                        MainActivity.class);
+                startActivity(myIntent);
+            }
+        });
     }
 
     public void onImageUploaded(ImageResponse response){
@@ -105,7 +113,7 @@ public class ResultActivity extends Activity implements OnImageUploadedListener 
         }
         String respString = "";
         try {
-           respString = convertStreamToString(resp.getEntity().getContent());
+            respString = convertStreamToString(resp.getEntity().getContent());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -115,14 +123,6 @@ public class ResultActivity extends Activity implements OnImageUploadedListener 
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
         String asd = jsonObject.get("response").toString();
         finished.setText("Upload finished: " + "\n" + asd + "\n" + response.data.link);
-        button.setOnClickListener(new OnClickListener() {
-            public void onClick(View arg0) {
-                // Start NewActivity.class
-                Intent myIntent = new Intent(ResultActivity.this,
-                        Camera2Activity.class);
-                startActivity(myIntent);
-            }
-        });
 
     }
 
