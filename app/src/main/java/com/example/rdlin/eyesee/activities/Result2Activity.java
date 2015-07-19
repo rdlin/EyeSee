@@ -114,7 +114,7 @@ public class Result2Activity extends Activity implements
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url?imgur=" + cutLink));
+            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url2?imgur=" + cutLink));
             resp = client.execute(request);
             try {
                 Thread.sleep(5000);
