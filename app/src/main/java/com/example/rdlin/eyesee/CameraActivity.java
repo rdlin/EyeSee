@@ -19,6 +19,7 @@ import java.io.IOException;
 public class CameraActivity extends Activity {
     int TAKE_PHOTO_CODE = 0;
     public static int count=0;
+    String file;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -36,7 +37,7 @@ public class CameraActivity extends Activity {
 
                 // here,counter will be incremented each time,and the picture taken by camera will be stored as 1.jpg,2.jpg and likewise.
                 count++;
-                String file = dir + count + ".jpg";
+                file = dir + count + ".jpg";
                 File newfile = new File(file);
                 try {
                     newfile.createNewFile();
@@ -47,6 +48,7 @@ public class CameraActivity extends Activity {
 
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+                cameraIntent.putExtra("PicName", file);
                 startActivityForResult(cameraIntent, TAKE_PHOTO_CODE);
             }
         });
@@ -58,12 +60,11 @@ public class CameraActivity extends Activity {
 
         if (requestCode == TAKE_PHOTO_CODE && resultCode == RESULT_OK) {
             Log.d("CameraDemo", "Pic saved");
-            Log.d("CameraDemo", data.getStringExtra(MediaStore.EXTRA_OUTPUT));
+            Log.d("CameraDemo", file);
             Intent myIntent = new Intent(CameraActivity.this,
-                   MainActivity.class);
+                   ResultActivity.class);
+            myIntent.putExtra("picName", file);
             startActivity(myIntent);
-
-
         }
     }
 }

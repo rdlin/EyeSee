@@ -9,17 +9,25 @@ import android.view.View;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 
 public class MainActivity extends Activity {
     Button button;
+    TextView text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         button = (Button) findViewById(R.id.start_button);
-
+        text = (TextView) findViewById(R.id.textViewMain);
+        Intent intent = getIntent();
+        String extras = getIntent().getStringExtra("PicName");
+        if (extras != null) {
+            String value = extras;
+            text.setText(value);
+        }
         button.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
 
