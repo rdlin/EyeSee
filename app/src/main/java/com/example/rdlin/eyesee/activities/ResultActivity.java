@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.speech.tts.TextToSpeech;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -24,14 +23,12 @@ import com.example.rdlin.eyesee.services.UploadService;
 import com.example.rdlin.eyesee.utils.aLog;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -39,7 +36,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
@@ -57,6 +53,7 @@ public class ResultActivity extends Activity implements
     private File chosenFile; //chosen file from intent
     TextToSpeech tts;
     String asd;
+    String locationInfo;
     RelativeLayout rlayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +109,7 @@ public class ResultActivity extends Activity implements
             request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url?imgur=" + cutLink));
             resp = client.execute(request);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -137,8 +134,19 @@ public class ResultActivity extends Activity implements
         String json = gson.toJson(respString);
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
         asd = jsonObject.get("response").toString();
+        locationInfo = "";
+
+        if (jsonObject.has("location") && jsonObject.get("location").toString().equals("")) {
+            locationInfo = "The location of the expiry date for this item is at the " + jsonObject.get("location").toString() +
+                ". Please tap again, take another picture " + "of the " + jsonObject.get("location").toString() + ",";
+        }
         finished.setText(asd);
-        asd = "You're holding a " + asd + "." + " Please tap again, take another picture, and wait 20 more seconds for more information.";
+        if (locationInfo.equals("")) {
+            asd = "You're holding a " + asd + "." + "Please tap again, take another picture, and wait 20 more seconds for more information.";
+        } else {
+            asd = "You're holding a " + asd + "." + locationInfo + " and wait 20 more seconds for more information.";
+        }
+
         speakOut(asd);
         rlayout.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {

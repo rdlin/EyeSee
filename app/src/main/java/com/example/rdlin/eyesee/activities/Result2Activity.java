@@ -109,10 +109,10 @@ public class Result2Activity extends Activity implements
         try {
             HttpClient client = new DefaultHttpClient();
             HttpGet request = new HttpGet();
-            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url?imgur=" + cutLink));
+            request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url2?imgur=" + cutLink));
             resp = client.execute(request);
             try {
-                Thread.sleep(3000);
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -136,9 +136,16 @@ public class Result2Activity extends Activity implements
 
         String json = gson.toJson(respString);
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
-        asd = jsonObject.get("response").toString();
-        finished.setText(asd);
-        asd = "You're holding a " + asd + "." + " Thanks for using eyesee. Tap again to try for another product.";
+
+        if (jsonObject.has("expiry") && jsonObject.get("expiry").toString().equals("")) {
+            asd = "The expiry date is " + jsonObject.get("expiry").toString() + "";
+            finished.setText(asd);
+        }
+        else {
+            asd = "We were not able to find the expiry date. Sorry";
+            finished.setText(asd);
+        }
+        asd = asd + "." + " Thank you for using eyesee. Tap again to try for another product.";
         speakOut(asd);
         rlayout.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
