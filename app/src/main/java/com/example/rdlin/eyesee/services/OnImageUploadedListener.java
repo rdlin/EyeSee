@@ -7,6 +7,6 @@ import com.example.rdlin.eyesee.imgurmodel.ImageResponse;
  *
  * Listener for when an image is uploaded
  */
-public interface OnImageUploadedListener {
+public interface OnImageUploadedListener{
   public void onImageUploaded(ImageResponse response);
 }

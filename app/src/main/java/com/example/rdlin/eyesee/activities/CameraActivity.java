@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,19 +15,23 @@ import com.example.rdlin.eyesee.R;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 
-public class CameraActivity extends Activity {
+public class CameraActivity extends Activity implements
+        TextToSpeech.OnInitListener{
     int TAKE_PHOTO_CODE = 0;
     public static int count=0;
     String file;
     Uri outputFileUri;
+    private TextToSpeech tts;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
 
+        tts = new TextToSpeech(this, this);
         //here,we are making a folder named picFolder to store pics taken by the camera using this application
         final String dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES) + "/picFolder/";
         File newdir = new File(dir);
@@ -62,4 +67,41 @@ public class CameraActivity extends Activity {
             startActivity(myIntent);
         }
     }
+
+    @Override
+    public void onDestroy() {
+        // Don't forget to shutdown tts!
+        if (tts != null) {
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onDestroy();
+    }
+
+    public void onInit(int status) {
+
+        if (status == TextToSpeech.SUCCESS) {
+
+            int result = tts.setLanguage(Locale.US);
+
+            if (result == TextToSpeech.LANG_MISSING_DATA
+                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                Log.e("TTS", "This Language is not supported");
+            } else {
+                speakOut();
+            }
+
+        } else {
+            Log.e("TTS", "Initilization Failed!");
+        }
+
+    }
+
+    private void speakOut() {
+
+        String text = "Please take a picture by tapping the bottom middle button once to take the picture, wait 2 seconds, and another time to confirm. Then please wait 20 seconds.";
+
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
 }

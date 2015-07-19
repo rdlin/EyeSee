@@ -5,11 +5,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.speech.tts.TextToSpeech;
 import android.util.JsonReader;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.rdlin.eyesee.R;
@@ -41,46 +44,58 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Locale;
 
 
-public class Result2Activity extends Activity implements OnImageUploadedListener {
+public class Result2Activity extends Activity implements
+        OnImageUploadedListener{
     Button button;
     TextView text;
     TextView finished;
     ImageView uploadImage;
     private Upload upload; // Upload object containging image and meta data
     private File chosenFile; //chosen file from intent
+    TextToSpeech tts;
+    String asd;
+    RelativeLayout rlayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         setContentView(R.layout.activity_result);
+        asd = "Done! Please tap again.";
+        rlayout = (RelativeLayout) findViewById(R.id.RelativeActivityLayout);
+        tts=new TextToSpeech(getApplicationContext(), new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int status) {
+                if (status == TextToSpeech.SUCCESS) {
 
-        button = (Button) findViewById(R.id.restart_button);
-        text = (TextView) findViewById(R.id.textViewResult);
+                    int result = tts.setLanguage(Locale.US);
+
+                    if (result == TextToSpeech.LANG_MISSING_DATA
+                            || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                        Log.e("TTS", "This Language is not supported");
+                    } else {
+                        speakOut(asd);
+                    }
+
+                } else {
+                    Log.e("TTS", "Initilization Failed!");
+                }
+            }
+        });
         finished = (TextView) findViewById(R.id.upload_finish);
-        uploadImage = (ImageView) findViewById(R.id.upload_image);
 
         Intent intent = getIntent();
         Uri returnUri = getIntent().getData();
         String extrasString = returnUri.toString();
         if (extrasString != null) {
             String value = extrasString;
-            text.setText(value);
         }
         chosenFile = new File(DocumentHelper.getPath(this, returnUri));
-        Picasso.with(this).load(chosenFile).fit().into(uploadImage);
         createUpload(chosenFile);
         new UploadService(upload, this).execute();
-        button.setOnClickListener(new OnClickListener() {
-            public void onClick(View arg0) {
-                // Start NewActivity.class
-                Intent myIntent = new Intent(Result2Activity.this,
-                        MainActivity.class);
-                startActivity(myIntent);
-            }
-        });
     }
 
     public void onImageUploaded(ImageResponse response){
@@ -97,7 +112,7 @@ public class Result2Activity extends Activity implements OnImageUploadedListener
             request.setURI(new URI("https://sleepy-plateau-3785.herokuapp.com/url?imgur=" + cutLink));
             resp = client.execute(request);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(3000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -121,8 +136,18 @@ public class Result2Activity extends Activity implements OnImageUploadedListener
 
         String json = gson.toJson(respString);
         JsonObject jsonObject = gson.fromJson(respString, JsonObject.class);
-        String asd = jsonObject.get("response").toString();
-        finished.setText("Upload finished: " + "\n" + asd + "\n" + response.data.link);
+        asd = jsonObject.get("response").toString();
+        finished.setText(asd);
+        asd = "You're holding a " + asd + "." + " Thanks for using eyesee. Tap again to try for another product.";
+        speakOut(asd);
+        rlayout.setOnClickListener(new OnClickListener() {
+            public void onClick(View arg0) {
+                // Start NewActivity.class
+                Intent myIntent = new Intent(Result2Activity.this,
+                        MainActivity.class);
+                startActivity(myIntent);
+            }
+        });
 
     }
 
@@ -146,11 +171,18 @@ public class Result2Activity extends Activity implements OnImageUploadedListener
         }
     }
 
-    private void createUpload(File image){
+    private void createUpload(File image) {
         upload = new Upload();
 
         upload.image = image;
 
+    }
+
+    private void speakOut(String text) {
+
+        //String text = "Tap then take a picture of the grocery item.";
+
+        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
 }
