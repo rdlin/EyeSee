@@ -1,4 +1,4 @@
-package com.example.rdlin.eyesee;
+package com.example.rdlin.eyesee.activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import com.example.rdlin.eyesee.R;
 
 import java.io.File;
 import java.io.IOException;

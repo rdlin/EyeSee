@@ -1,15 +1,14 @@
-package com.example.rdlin.eyesee;
+package com.example.rdlin.eyesee.activities;
 
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
-import android.view.MenuItem;
 import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
+
+import com.example.rdlin.eyesee.R;
 
 
 public class MainActivity extends Activity {

@@ -1,9 +1,11 @@
-package com.example.rdlin.eyesee;
+package com.example.rdlin.eyesee.activities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.rdlin.eyesee.R;
 
 public class SplashActivity extends Activity {
 
